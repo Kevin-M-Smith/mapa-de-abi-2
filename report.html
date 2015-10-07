@@ -1,0 +1,62 @@
+
+<html>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<script>
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
+var url = 'https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET ' + getParameterByName('id') + '&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0';
+
+console.log(url);
+
+// var url = 'https://spreadsheets.google.com/tq'
+// url += '?tqx='
+// url += getParameterByName('tqx');
+// url += '&tq='
+// url += getParameterByName('tq');
+// url += '&key='
+// url += getParameterByName('key');
+// url += '&gid='
+// url += getParameterByName('gid');
+
+//https://gist.github.com/pgaertig/2376975#file-transpose_table-js-L3
+
+$(document).ready(function(){
+	$("#result").load(encodeURI(url), function(){
+		$("table").attr('id','thetable');
+		var t = $('#thetable tbody').eq(0);
+   		var r = t.find('tr');
+    	var cols= r.length;
+    	var rows= r.eq(0).find('td').length;
+    	var cell, next, tem, i = 0;
+    	var tb= $('<tbody></tbody>');
+ 
+    	while(i<rows){
+    	    cell= 0;
+  	      tem= $('<tr></tr>');
+  	      while(cell<cols){
+   	         next= r.eq(cell++).find('td').eq(0);
+  	          tem.append(next);
+  	      }
+  	      tb.append(tem);
+  	      ++i;
+  	  }
+  	  $('#thetable').append(tb);
+  	  $('#thetable').show();
+	});
+});
+
+</script>
+
+<div id="result"></div>
+
+</html>

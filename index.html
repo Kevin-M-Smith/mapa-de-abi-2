@@ -1,0 +1,71 @@
+<html>
+  <body>
+    <!-- We'll need to include Google Maps, Handlebars for templating, and jQuery for general futzing about -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- Tabletop.js for accessing Google Spreadsheets and Mapsheet.js for mapping, of course -->
+    <script type="text/javascript" src="tabletop.js"></script>
+    <script type="text/javascript" src="mapsheet.js"></script>
+
+    <!-- This is where the map will go -->
+    <div id="map"></div>
+    <div style="z-index: 10; position: absolute; right: 50;  bottom: 25;">
+    	<img id='legend' src="img/escala.png" width="200px">
+    	<img id='block' src="img/block.png">
+    </div>
+    
+    <style>
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+   <script id="popup-template" type="text/x-handlebars-template">
+      <h3>IBA: {{IBA}}</h3>
+      
+      <a style="text-decoration: none; font-weight:bold;" href="report.html?id={{row}}">Ver el registro completo.</a>
+   
+   <!--    <a style="text-decoration: none; font-weight:bold;" href="https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET {{row}}&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0">Ver el registro completo.</a> -->
+   
+      <p>Fecha: {{Fecha}}</p>
+      <p>Hora: {{Hora}}</p>
+      <p>Notas: {{Notas}}</p>
+    </script>
+
+    <!-- Okay, time to do this! -->
+    <script type="text/javascript">
+      $(document).ready( function() {     
+      
+      	$("#block").hide();  
+      
+      	$("#legend").click( function(){
+      		$("#legend").hide();
+      		$("#block").show();
+      	});
+      	
+      	$("#block").click( function(){
+      		$("#block").hide();
+      		$("#legend").show();
+      	});
+      
+      
+        // Make sure the spreadsheet is published!
+        var published_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE/pubhtml'; 
+
+        // Let's get the popup template and compile it using Handlebars
+        var source   = $("#popup-template").html();
+        var template = Handlebars.compile(source);
+
+        // OK, now let's make the map
+        var map = Mapsheet({
+          key: published_spreadsheet_url,
+          element: "map",
+          popupTemplate: template
+        });
+      });
+    </script>
+  </body>
+</html>
