@@ -28,6 +28,7 @@
 		this.popupTemplate = options.popupTemplate;
 		this.callbackContext = options.callbackContext;
 		this.callback = options.callback;
+	  this.oms = null;
 		
 		// Let's automatically engage simpleSheet mode,
 		// which allows for easier using of data later on
@@ -165,6 +166,7 @@
 	
 	Mapsheet.Providers.Google = function(options) {
 		this.map = options.map;
+
 		this.mapOptions = merge_options( { mapTypeId: google.maps.MapTypeId.ROADMAP }, options.mapOptions || {} );
 		// We'll be nice and allow center to be a lat/lng array instead of a Google Maps LatLng
 		if(this.mapOptions.center && this.mapOptions.center.length == 2) {
@@ -175,8 +177,23 @@
 	Mapsheet.Providers.Google.prototype = {
 		initialize: function(element) {
 			if(typeof(this.map) === 'undefined') {
-				this.map = new google.maps.Map(element, this.mapOptions);
+
+				var map = new google.maps.Map(element, this.mapOptions);
+
+//				var mc = new MarkerClusterer(map);
+
+				map.addListener('zoom_changed', function(event){
+					console.log(map.getZoom());
+				});
+
+
+				this.map = map;
+				console.log("woo")
+
 			}
+
+			console.log(this.map);
+
 			this.bounds = new google.maps.LatLngBounds();
 			this.infowindow = new google.maps.InfoWindow({ content: "loading...", maxWidth: '300' });
 		},
@@ -202,7 +219,7 @@
 
 			var pinColor = marker.point.get('hexcolor') || "FE7569";
 			pinColor = pinColor.replace('#','');
-			
+
 	    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
 	        new google.maps.Size(21, 34),
 	        new google.maps.Point(0,0),
@@ -238,7 +255,7 @@
 			var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
 			new google.maps.Size(31.5, 51),
 	        	new google.maps.Point(0, 0),
-	        	new google.maps.Point(10, 51),
+	        	new google.maps.Point(15.75, 51),
 	        	new google.maps.Size(31.5, 51));
 	    		var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
 			new google.maps.Size(80, 74),
@@ -257,12 +274,12 @@
 			this.setMarkerIcon(marker);
 			this.initInfoWindow(marker);
 			colorize(marker);
-			
-			
-			console.log(this);
-			
-			
-			
+
+
+			//console.log(this);
+
+
+
 
 			if(point.click) {
         google.maps.event.addListener(marker, 'click', function(e) {
@@ -272,21 +289,22 @@
 
 			return marker;
 		},
-		
+
 		/*
 			Google only lets you draw one InfoWindow on the page, so you
 			end up having to re-write to the original one each time.
 		*/
-		
+
 		initInfoWindow: function(marker) {
 			var infowindow = this.infowindow;
 			var clickedOpen = false;
-			
+
 			// All of the extra blah blahs are for making sure to not repopulate
-			// the infowindow when it's already opened and populated with the 
+			// the infowindow when it's already opened and populated with the
 			// right content
-			
+
       google.maps.event.addListener(marker, 'click', function() {
+
 				if(infowindow.getAnchor() === marker && infowindow.opened) {
 					return;
 				}
@@ -296,19 +314,38 @@
 				infowindow.opened = true;
       });
 
+
+
+
 		},
-		
+
 		drawPoints: function(points) {
-			console.log(points);
+
+			var markers = []
+			console.log(points)
+
+			var oms = new OverlappingMarkerSpiderfier(this.map);
+			this.oms = oms;
+
 			for(var i = 0; i < points.length; i++) {
-				if(!points[i].isValid()) { continue; }			
+				if(!points[i].isValid()) { continue; }
 				points[i].model.row = i;
 				var marker = this.drawMarker(points[i]);
 				marker.setMap(this.map);
+				markers.push(marker);
+				oms.addMarker(marker);
 				this.bounds.extend(marker.position);
 				points[i].marker = marker;
 			};
-			
+
+			//var mc = new MarkerClusterer(this.map, markers);
+
+
+
+			oms.addListener('spiderfy', function(markers) {
+				marker.removeListener()
+			});
+
 			if(!this.mapOptions.zoom && !this.mapOptions.center) {
   			this.map.fitBounds(this.bounds);
 			}
@@ -316,11 +353,11 @@
 	}
 
 	/*
-	
+
 	MapQuest (OpenStreetMaps & free)
-	
+
 	*/
-	
+
 	Mapsheet.Providers.MapQuest = function(options) {
 		this.map = options.map;
 		this.mapOptions = merge_options({ mapTypeId: 'osm', zoom: 13, bestFitMargin: 0, zoomOnDoubleClick: true, latLng:{lat:40.735383, lng:-73.984655} }, options.mapOptions || {});
@@ -334,7 +371,7 @@
 		},
 
 		// We need custom icons!
-		
+
 		drawMarker: function(point) {
 		  var marker = new MQA.Poi( { lat: point.latitude(), lng: point.longitude() } );
 
@@ -362,11 +399,11 @@
 	}
 
 	/*
-	
+
 	MapBox
-	
+
 	*/
-	
+
 	Mapsheet.Providers.MapBox = function(options) {
 		this.map = options.map;
 		this.mapOptions = merge_options({ mapId: 'examples.map-vyofok3q'}, options.mapOptions || {});
@@ -383,11 +420,11 @@
         // this.map.ui.zoombox.add();
 			}
 		},
-		
+
 		drawMarker: function(point) {
 			var marker = L.marker(point.coords())
 				.bindPopup(point.content())
-			
+
 			if(typeof(point.get('icon url')) !== 'undefined' && point.get('icon url') !== '') {
 				var options = merge_options( point.markerOptions, { iconUrl: point.get('icon url') } );
 				var icon = L.icon(options);
@@ -396,7 +433,7 @@
 				var icon = L.icon(point.markerOptions);
 				marker.setIcon(icon);
 			}
-			
+
 			if(point.click) {
 			  marker.on('click', function(e) {
           point.click.call(this, e, point);

@@ -4,9 +4,13 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/markercluster.js"></script>
+    <script type="text/javascript" src="js/spiderfy2.js"></script>
 
     <!-- Tabletop.js for accessing Google Spreadsheets and Mapsheet.js for mapping, of course -->
     <script type="text/javascript" src="tabletop.js"></script>
+
+
     <script type="text/javascript" src="mapsheet.js"></script>
 
     <!-- This is where the map will go -->
@@ -53,18 +57,21 @@
       
       
         // Make sure the spreadsheet is published!
-        var published_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE/pubhtml'; 
+        var published_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1aT4GkCWdKqXf_0Hx-2_KSGLxIHtlySB_lRJsEfOvpfI/pubhtml';
 
         // Let's get the popup template and compile it using Handlebars
         var source   = $("#popup-template").html();
         var template = Handlebars.compile(source);
 
+
         // OK, now let's make the map
         var map = Mapsheet({
-          key: published_spreadsheet_url,
-          element: "map",
-          popupTemplate: template
+            map: map,
+            key: published_spreadsheet_url,
+            element: "map",
+            popupTemplate: template
         });
+
       });
     </script>
   </body>
