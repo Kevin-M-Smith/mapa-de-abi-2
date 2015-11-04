@@ -228,6 +228,38 @@ Note: The Google Maps API v3 must be included *before* this code
       return _results;
     };
 
+    p.generatePtsLadder = function (count, centerPt) {
+      _results = [];
+      legLength = 0;
+      for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+        _results.push(new gm.Point(centerPt.x, centerPt.y - legLength));
+        legLength += 55;
+      }
+      return _results;
+    };
+
+      p.generateSidePtsLadder = function (count, centerPt){
+          _results = [];
+          legLength = 0;
+          for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+              _results.push(new gm.Point(centerPt.x - 20, centerPt.y - legLength));
+            legLength += 55;
+          }
+
+          return _results;
+      };
+
+      p.generateTallPts = function (count, centerPt){
+          _results = [];
+          legLength = 0;
+          for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+              _results.push(new gm.Point(centerPt.x - 50, centerPt.y - legLength));
+              if( _j < count -1){
+                  legLength += 80;
+              }
+          }
+      }
+
     p.generatePtsSpiral = function(count, centerPt) {
       var angle, i, legLength, pt, _j, _results;
       legLength = this['spiralLengthStart'];
@@ -403,8 +435,17 @@ Note: The Google Maps API v3 must be included *before* this code
         }
         return _results;
       })());
-      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsSpiral(numFeet, bodyPt).reverse() : this.generatePtsCircle(numFeet, bodyPt);
-      spiderfiedMarkers = (function() {
+
+        nonNearbyMarkers.forEach(function(e){
+            console.log(e)
+            e.setMap(null);
+        })
+
+      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt).reverse(): this.generatePtsLadder(numFeet, bodyPt).reverse()
+        var footPtsSides = this.generateSidePtsLadder(numFeet, bodyPt).reverse();
+        var tallPts = this.generateTallPts(numFeet, bodyPt);
+        console.log(footPts);
+        spiderfiedMarkers = (function() {
         var _j, _len1, _results,
           _this = this;
         _results = [];
@@ -417,11 +458,12 @@ Note: The Google Maps API v3 must be included *before* this code
           marker = nearestMarkerDatum.marker;
           leg = new gm.Polyline({
             map: this.map,
-            path: [marker.position, footLl],
+            path: [this.ptToLl(footPts[_j]), this.ptToLl(footPtsSides[_j]), this.ptToLl(footPtsSides[0])],
             strokeColor: this['legColors']['usual'][this.map.mapTypeId],
             strokeWeight: this['legWeight'],
             zIndex: this['usualLegZIndex']
           });
+          console.log(marker.position);
           marker['_omsData'] = {
             usualPosition: marker.position,
             leg: leg
@@ -441,6 +483,8 @@ Note: The Google Maps API v3 must be included *before* this code
       }).call(this);
       delete this.spiderfying;
       this.spiderfied = true;
+
+
       return this.trigger('spiderfy', spiderfiedMarkers, nonNearbyMarkers);
     };
 
@@ -473,6 +517,7 @@ Note: The Google Maps API v3 must be included *before* this code
           unspiderfiedMarkers.push(marker);
         } else {
           nonNearbyMarkers.push(marker);
+            marker.setMap(this.map);
         }
       }
       delete this.unspiderfying;
