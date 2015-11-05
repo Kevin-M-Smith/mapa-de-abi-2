@@ -87,7 +87,7 @@
                     click: this.click
                 });
                 this.points.push(point);
-            };
+            }
 
             this.draw();
         },
@@ -373,6 +373,8 @@
             oms.addListener('spiderfy', function(markers) {
                 marker.removeListener()
             });
+
+            var mc = new MarkerClusterer(this.map, markers, {gridSize:50, maxZoom: 13});
 
             if (!this.mapOptions.zoom && !this.mapOptions.center) {
                 this.map.fitBounds(this.bounds);
