@@ -47,6 +47,7 @@
 
         if (typeof(this.popupTemplate) === 'string') {
             var source = document.getElementById(this.popupTemplate).innerHTML;
+            
             this.popupTemplate = Handlebars.compile(source);
         }
         this.markerOptions = options.markerOptions || {};
@@ -367,9 +368,7 @@
         drawPoints: function(points) {
 
             var markers = []
-            
-            points.forEach(function(e){console.log(Object.keys(e["model"]))});
-
+        
             var oms = new OverlappingMarkerSpiderfier(this.map);
             this.oms = oms;
 

@@ -29,16 +29,16 @@
     </style>
 
    <script id="popup-template" type="text/x-handlebars-template">
-      
-      <a style="text-decoration: none; font-weight:bold;" href="report.html?id={{row}}">Ver el registro completo.</a>
-   
    <!--    <a style="text-decoration: none; font-weight:bold;" href="https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET {{row}}&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0">Ver el registro completo.</a> -->
-   
-      <p>Fecha: {{Fecha}}</p>
-      <p>IBA: {{IBA}}</p>
-      <p>Lugar de Monitoreo: {{[Lugar de Monitoreo]}}</p>
-      <p>Nombre / Grupo:  {{[Nombre/Grupo]}}</p>
-      <p>Institución: {{[Institución]}}</p>
+   		
+      <p><strong>Fecha:</strong> {{{nullifempty Fecha}}}</p>
+      <p><strong>IBA:</strong> {{{nullifempty IBA}}}</p>
+      <p><strong>Lugar de Monitoreo:</strong> {{{nullifempty [Lugar de Monitoreo]}}}</p>
+      <p><strong>Nombre / Grupo:</strong>  {{{nullifempty [Nombre/Grupo]}}}</p>
+      <p><strong>Institución:</strong> {{{nullifempty [Institución]}}}</p>
+      
+       <a style="text-decoration: none; font-weight:bold;" href="report.html?id={{row}}">Ver el registro completo.</a>
+       
     </script>
 
     <!-- Okay, time to do this! -->
@@ -64,6 +64,12 @@
         // Let's get the popup template and compile it using Handlebars
         var source   = $("#popup-template").html();
         
+        Handlebars.registerHelper("nullifempty", function(val) {
+    if(val === "") {
+        return "<i> nulo </i>";
+    }
+    return val;
+});
         var template = Handlebars.compile(source);
         
 
