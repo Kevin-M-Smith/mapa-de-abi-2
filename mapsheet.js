@@ -339,7 +339,9 @@
 				if (infowindow.getAnchor() === marker && infowindow.opened) {
                     return;
                 }
-                if(marker["multiple"] == true){
+                if(marker["multiple"] == true && marker.map.getZoom() <= 14){
+                
+
                   infowindow.setContent("Multiple measurements here. <br> Zoom in to see. ");
                   infowindow.open(that.map, that);
                   clickedOpen = true;
