@@ -14,7 +14,7 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var url = 'https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET ' + getParameterByName('id') + '&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0';
+var url = 'http://crossorigin.me/https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET ' + getParameterByName('id') + '&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0';
 
 // var url = 'https://spreadsheets.google.com/tq'
 // url += '?tqx='
