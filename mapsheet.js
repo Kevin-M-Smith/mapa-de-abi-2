@@ -191,7 +191,7 @@
         this.map = options.map;
 
         this.mapOptions = merge_options({
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.SATELLITE
         }, options.mapOptions || {});
         // We'll be nice and allow center to be a lat/lng array instead of a Google Maps LatLng
         if (this.mapOptions.center && this.mapOptions.center.length == 2) {
@@ -204,20 +204,8 @@
             if (typeof(this.map) === 'undefined') {
 
                 var map = new google.maps.Map(element, this.mapOptions);
-
-                //				var mc = new MarkerClusterer(map);
-
-                map.addListener('zoom_changed', function(event) {
-                    console.log(map.getZoom());
-                });
-
-
                 this.map = map;
-                console.log("woo")
-
             }
-
-            console.log(this.map);
 
             this.bounds = new google.maps.LatLngBounds();
             this.infowindow = new google.maps.InfoWindow({
@@ -341,6 +329,39 @@
                 clickedOpen = true;
                 infowindow.opened = true;
             });
+            
+            var timer; 
+            
+            google.maps.event.addListener(marker, 'mouseover', function() {
+				var that = this; 
+				timer = setTimeout(function(){
+				
+				if (infowindow.getAnchor() === marker && infowindow.opened) {
+                    return;
+                }
+                if(marker["multiple"] == true){
+                  infowindow.setContent("Multiple measurements here. <br> Zoom in to see. ");
+                  infowindow.open(that.map, that);
+                  clickedOpen = true;
+                  infowindow.opened = true;
+                }
+
+				}, 100);
+
+            });
+            
+            google.maps.event.addListener(marker, 'mouseout', function() {
+				clearTimeout(timer); 
+             	if(marker["multiple"] == true){
+             		marker["multiple"] = false;
+             		infowindow.close(); 
+             	}
+
+            });
+            
+            
+
+
 
 
 
@@ -374,7 +395,7 @@
                 marker.removeListener()
             });
 
-            var mc = new MarkerClusterer(this.map, markers, {gridSize:50, maxZoom: 13});
+            //var mc = new MarkerClusterer(this.map, markers, {gridSize:50, maxZoom: 13});
 
             if (!this.mapOptions.zoom && !this.mapOptions.center) {
                 this.map.fitBounds(this.bounds);

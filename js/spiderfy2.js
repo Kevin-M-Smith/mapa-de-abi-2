@@ -42,7 +42,7 @@ Note: The Google Maps API v3 must be included *before* this code
 
     p['markersWontMove'] = false;
 
-    p['nearbyDistance'] = 15;
+    p['nearbyDistance'] = 5;
 
     p['circleSpiralSwitchover'] = 9;
 
@@ -307,10 +307,12 @@ Note: The Google Maps API v3 must be included *before* this code
         if (nearbyMarkerData.length === 1) {
           return this.trigger('click', marker, event);
         } else {
-        	if (this.map.getZoom() > 12){
+        	if (this.map.getZoom() > 14){
         	       return this.spiderfy(nearbyMarkerData, nonNearbyMarkers);
         	}
-   
+        	else {
+        		this.spiderfy2(nearbyMarkerData, nonNearbyMarkers); 
+        	}
         }
       }
     };
@@ -421,6 +423,17 @@ Note: The Google Maps API v3 must be included *before* this code
         }
       };
     };
+    
+        p.spiderfy2 = function(markerData, nonNearbyMarkers) {
+      
+
+        markerData.forEach(function(e){
+        
+        	e.marker["multiple"] = true; 
+
+        });
+
+    };
 
     p.spiderfy = function(markerData, nonNearbyMarkers) {
       var bodyPt, footLl, footPt, footPts, highlightListenerFuncs, leg, marker, md, nearestMarkerDatum, numFeet, spiderfiedMarkers;
@@ -437,21 +450,23 @@ Note: The Google Maps API v3 must be included *before* this code
       })());
 
         nonNearbyMarkers.forEach(function(e){
-            e["grey"] = true;
-            var pinColor = "d3d3d3";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
-                new google.maps.Size(31.5, 51),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(15.75, 51),
-                new google.maps.Size(31.5, 51));
-            var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-                new google.maps.Size(80, 74),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(12, 70),
-                new google.maps.Size(80, 74));
+        
+       // e.setMap(null); 
+       //     e["grey"] = true;
+       //     var pinColor = "d3d3d3";
+      //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
+      //          new google.maps.Size(31.5, 51),
+      //          new google.maps.Point(0, 0),
+        //        new google.maps.Point(15.75, 51),
+       //         new google.maps.Size(31.5, 51));
+       //     var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        //       new google.maps.Size(80, 74),
+         //       new google.maps.Point(0, 0),
+         //       new google.maps.Point(12, 70),
+         //       new google.maps.Size(80, 74));
 
-            e.setShadow(pinShadow);
-            e.setIcon(pinImage);
+          //  e.setShadow(pinShadow);
+         //   e.setIcon(pinImage);
         });
 
       footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt).reverse(): this.generatePtsLadder(numFeet, bodyPt).reverse()
@@ -519,6 +534,7 @@ Note: The Google Maps API v3 must be included *before* this code
           marker['_omsData'].leg.setMap(null);
           if (marker !== markerNotToMove) {
             marker.setPosition(marker['_omsData'].usualPosition);
+            
           }
           marker.setZIndex(null);
           listeners = marker['_omsData'].hightlightListeners;
@@ -528,33 +544,34 @@ Note: The Google Maps API v3 must be included *before* this code
           }
           delete marker['_omsData'];
           unspiderfiedMarkers.push(marker);
+         // marker["multiple"] = false; 
         } else {
           nonNearbyMarkers.push(marker);
+          //marker.setMap(this.map); 
+			//marker["multiple"] = false; 
+        //    function ABIcolor(_ABI) {
+        //        if (_ABI > 70) return "99E6FF";
+         //       if (_ABI > 45) return "94FF70";
+        //        if (_ABI > 27) return "FFFA4F";
+       //         if (_ABI > 11) return "FFAD33";
+      //          return "F75D63";
+      //      }
 
+     //       var pinColor = ABIcolor(marker.point.model.IBA);
 
-            function ABIcolor(_ABI) {
-                if (_ABI > 70) return "99E6FF";
-                if (_ABI > 45) return "94FF70";
-                if (_ABI > 27) return "FFFA4F";
-                if (_ABI > 11) return "FFAD33";
-                return "F75D63";
-            }
+      //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
+    //           new google.maps.Size(31.5, 51),
+    //            new google.maps.Point(0, 0),
+    //            new google.maps.Point(15.75, 51),
+    //            new google.maps.Size(31.5, 51));
+    //        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+    //           new google.maps.Size(80, 74),
+   //             new google.maps.Point(0, 0),
+   //            new google.maps.Point(12, 70),
+   //            new google.maps.Size(80, 74));
 
-            var pinColor = ABIcolor(marker.point.model.IBA);
-
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
-                new google.maps.Size(31.5, 51),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(15.75, 51),
-                new google.maps.Size(31.5, 51));
-            var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-                new google.maps.Size(80, 74),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(12, 70),
-                new google.maps.Size(80, 74));
-
-            marker.setShadow(pinShadow);
-            marker.setIcon(pinImage);
+  //         marker.setShadow(pinShadow);
+  //          marker.setIcon(pinImage);
 
         }
       }
