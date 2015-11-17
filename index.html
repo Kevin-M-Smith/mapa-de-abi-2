@@ -1,4 +1,5 @@
 <html>
+<meta charset="utf-8" /> 
   <body>
     <!-- We'll need to include Google Maps, Handlebars for templating, and jQuery for general futzing about -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -28,15 +29,16 @@
     </style>
 
    <script id="popup-template" type="text/x-handlebars-template">
-      <h3>IBA: {{IBA}}</h3>
       
       <a style="text-decoration: none; font-weight:bold;" href="report.html?id={{row}}">Ver el registro completo.</a>
    
    <!--    <a style="text-decoration: none; font-weight:bold;" href="https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET {{row}}&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0">Ver el registro completo.</a> -->
    
       <p>Fecha: {{Fecha}}</p>
-      <p>Hora: {{Hora}}</p>
-      <p>Notas: {{Notas}}</p>
+      <p>IBA: {{IBA}}</p>
+      <p>Lugar de Monitoreo: {{[Lugar de Monitoreo]}}</p>
+      <p>Nombre / Grupo:  {{[Nombre/Grupo]}}</p>
+      <p>Institución: {{[Institución]}}</p>
     </script>
 
     <!-- Okay, time to do this! -->
@@ -57,12 +59,13 @@
       
       
         // Make sure the spreadsheet is published!
-        var published_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1aT4GkCWdKqXf_0Hx-2_KSGLxIHtlySB_lRJsEfOvpfI/pubhtml';
+        var published_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE/pubhtml';
 
         // Let's get the popup template and compile it using Handlebars
         var source   = $("#popup-template").html();
+        
         var template = Handlebars.compile(source);
-
+        
 
         // OK, now let's make the map
         var map = Mapsheet({

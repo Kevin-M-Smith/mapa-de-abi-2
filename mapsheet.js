@@ -54,7 +54,7 @@
         if (typeof(this.element) === 'string') {
             this.element = document.getElementById(this.element);
         };
-
+        
         this.tabletop = new Tabletop({
             key: this.key,
             callback: this.loadPoints,
@@ -173,18 +173,18 @@
     };
 
     /*
-	
-    	Providers only need respond to initialize and drawPoints
-	
+    
+        Providers only need respond to initialize and drawPoints
+    
     */
 
     Mapsheet.Providers = {};
 
 
     /*
-	
-    	Google Maps
-    	
+    
+        Google Maps
+        
     */
 
     Mapsheet.Providers.Google = function(options) {
@@ -215,11 +215,11 @@
         },
 
         /* 
-        	Google Maps only colors markers #FE7569, but turns out you can use
-        		the Google Charts API to make markers any hex color! Amazing.
-        		
-        	This code was pulled from
-        	http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
+            Google Maps only colors markers #FE7569, but turns out you can use
+                the Google Charts API to make markers any hex color! Amazing.
+                
+            This code was pulled from
+            http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
         */
 
         setMarkerIcon: function(marker) {
@@ -296,7 +296,6 @@
 
 
 
-
             if (point.click) {
                 google.maps.event.addListener(marker, 'click', function(e) {
                     point.click.call(this, e, point);
@@ -307,8 +306,8 @@
         },
 
         /*
-        	Google only lets you draw one InfoWindow on the page, so you
-        	end up having to re-write to the original one each time.
+            Google only lets you draw one InfoWindow on the page, so you
+            end up having to re-write to the original one each time.
         */
 
         initInfoWindow: function(marker) {
@@ -329,42 +328,37 @@
                 clickedOpen = true;
                 infowindow.opened = true;
             });
-            
-            var timer; 
-            
+
+            var timer;
+
             google.maps.event.addListener(marker, 'mouseover', function() {
-				var that = this; 
-				timer = setTimeout(function(){
-				
-				if (infowindow.getAnchor() === marker && infowindow.opened) {
-                    return;
-                }
-                if(marker["multiple"] == true && marker.map.getZoom() <= 14){
-                
+                var that = this;
+                timer = setTimeout(function() {
 
-                  infowindow.setContent("Multiple measurements here. <br> Zoom in to see. ");
-                  infowindow.open(that.map, that);
-                  clickedOpen = true;
-                  infowindow.opened = true;
-                }
+                    if (infowindow.getAnchor() === marker && infowindow.opened) {
+                        return;
+                    }
+                    if (marker["multiple"] == true && marker.map.getZoom() <= 14) {
 
-				}, 100);
+
+                        infowindow.setContent("Multiple measurements here. <br> Zoom in to see. ");
+                        infowindow.open(that.map, that);
+                        clickedOpen = true;
+                        infowindow.opened = true;
+                    }
+
+                }, 100);
 
             });
-            
+
             google.maps.event.addListener(marker, 'mouseout', function() {
-				clearTimeout(timer); 
-             	if(marker["multiple"] == true){
-             		marker["multiple"] = false;
-             		infowindow.close(); 
-             	}
+                clearTimeout(timer);
+                if (marker["multiple"] == true) {
+                    marker["multiple"] = false;
+                    infowindow.close();
+                }
 
             });
-            
-            
-
-
-
 
 
 
@@ -373,7 +367,8 @@
         drawPoints: function(points) {
 
             var markers = []
-            console.log(points)
+            
+            points.forEach(function(e){console.log(Object.keys(e["model"]))});
 
             var oms = new OverlappingMarkerSpiderfier(this.map);
             this.oms = oms;

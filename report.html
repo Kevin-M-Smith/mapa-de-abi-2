@@ -1,6 +1,7 @@
 
 <html>
 
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 
@@ -13,10 +14,7 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-
 var url = 'https://spreadsheets.google.com/tq?tqx=out:html&tq=select * LIMIT 1 OFFSET ' + getParameterByName('id') + '&key=1QS2hkP5EsiJFSOFEIxppyET3gd9jVWBASOPlbBEjsWE&gid=0';
-
-console.log(url);
 
 // var url = 'https://spreadsheets.google.com/tq'
 // url += '?tqx='

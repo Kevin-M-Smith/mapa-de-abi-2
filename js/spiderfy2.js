@@ -228,7 +228,7 @@ Note: The Google Maps API v3 must be included *before* this code
       return _results;
     };
 
-    p.generatePtsLadder = function (count, centerPt) {
+    p.generatePtsLadder = function(count, centerPt) {
       _results = [];
       legLength = 0;
       for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
@@ -238,26 +238,26 @@ Note: The Google Maps API v3 must be included *before* this code
       return _results;
     };
 
-      p.generateSidePtsLadder = function (count, centerPt){
-          _results = [];
-          legLength = 0;
-          for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
-              _results.push(new gm.Point(centerPt.x - 20, centerPt.y - legLength));
-            legLength += 55;
-          }
+    p.generateSidePtsLadder = function(count, centerPt) {
+      _results = [];
+      legLength = 0;
+      for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+        _results.push(new gm.Point(centerPt.x - 20, centerPt.y - legLength));
+        legLength += 55;
+      }
 
-          return _results;
-      };
+      return _results;
+    };
 
-    p.generateTallPts = function (count, centerPt){
-          _results = [];
-          legLength = 0;
-          for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
-              _results.push(new gm.Point(centerPt.x - 50, centerPt.y - legLength));
-              if( _j < count -1){
-                  legLength += 80;
-              }
-          }
+    p.generateTallPts = function(count, centerPt) {
+      _results = [];
+      legLength = 0;
+      for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+        _results.push(new gm.Point(centerPt.x - 50, centerPt.y - legLength));
+        if (_j < count - 1) {
+          legLength += 80;
+        }
+      }
     };
 
     p.generatePtsSpiral = function(count, centerPt) {
@@ -307,12 +307,11 @@ Note: The Google Maps API v3 must be included *before* this code
         if (nearbyMarkerData.length === 1) {
           return this.trigger('click', marker, event);
         } else {
-        	if (this.map.getZoom() > 14){
-        	       return this.spiderfy(nearbyMarkerData, nonNearbyMarkers);
-        	}
-        	else {
-        		this.spiderfy2(nearbyMarkerData, nonNearbyMarkers); 
-        	}
+          if (this.map.getZoom() > 14) {
+            return this.spiderfy(nearbyMarkerData, nonNearbyMarkers);
+          } else {
+            this.spiderfy2(nearbyMarkerData, nonNearbyMarkers);
+          }
         }
       }
     };
@@ -423,15 +422,15 @@ Note: The Google Maps API v3 must be included *before* this code
         }
       };
     };
-    
-        p.spiderfy2 = function(markerData, nonNearbyMarkers) {
-      
 
-        markerData.forEach(function(e){
-        
-        	e.marker["multiple"] = true; 
+    p.spiderfy2 = function(markerData, nonNearbyMarkers) {
 
-        });
+
+      markerData.forEach(function(e) {
+
+        e.marker["multiple"] = true;
+
+      });
 
     };
 
@@ -449,31 +448,31 @@ Note: The Google Maps API v3 must be included *before* this code
         return _results;
       })());
 
-        nonNearbyMarkers.forEach(function(e){
-        
-       // e.setMap(null); 
-       //     e["grey"] = true;
-       //     var pinColor = "d3d3d3";
-      //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
-      //          new google.maps.Size(31.5, 51),
-      //          new google.maps.Point(0, 0),
+      nonNearbyMarkers.forEach(function(e) {
+
+        // e.setMap(null); 
+        //     e["grey"] = true;
+        //     var pinColor = "d3d3d3";
+        //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
+        //          new google.maps.Size(31.5, 51),
+        //          new google.maps.Point(0, 0),
         //        new google.maps.Point(15.75, 51),
-       //         new google.maps.Size(31.5, 51));
-       //     var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        //         new google.maps.Size(31.5, 51));
+        //     var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
         //       new google.maps.Size(80, 74),
-         //       new google.maps.Point(0, 0),
-         //       new google.maps.Point(12, 70),
-         //       new google.maps.Size(80, 74));
+        //       new google.maps.Point(0, 0),
+        //       new google.maps.Point(12, 70),
+        //       new google.maps.Size(80, 74));
 
-          //  e.setShadow(pinShadow);
-         //   e.setIcon(pinImage);
-        });
+        //  e.setShadow(pinShadow);
+        //   e.setIcon(pinImage);
+      });
 
-      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt): this.generatePtsLadder(numFeet, bodyPt)
-        var footPtsSides = this.generateSidePtsLadder(numFeet, bodyPt)
-        var tallPts = this.generateTallPts(numFeet, bodyPt);
-        console.log(footPts);
-        spiderfiedMarkers = (function() {
+      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt) : this.generatePtsLadder(numFeet, bodyPt)
+      var footPtsSides = this.generateSidePtsLadder(numFeet, bodyPt)
+      var tallPts = this.generateTallPts(numFeet, bodyPt);
+      console.log(footPts);
+      spiderfiedMarkers = (function() {
         var _j, _len1, _results,
           _this = this;
         _results = [];
@@ -516,7 +515,7 @@ Note: The Google Maps API v3 must be included *before* this code
       return this.trigger('spiderfy', spiderfiedMarkers, nonNearbyMarkers);
     };
 
-      p.unspiderfy= function(markerNotToMove) {
+    p.unspiderfy = function(markerNotToMove) {
       var listeners, marker, nonNearbyMarkers, unspiderfiedMarkers, _j, _len1, _ref2;
       if (markerNotToMove == null) {
         markerNotToMove = null;
@@ -534,7 +533,7 @@ Note: The Google Maps API v3 must be included *before* this code
           marker['_omsData'].leg.setMap(null);
           if (marker !== markerNotToMove) {
             marker.setPosition(marker['_omsData'].usualPosition);
-            
+
           }
           marker.setZIndex(null);
           listeners = marker['_omsData'].hightlightListeners;
@@ -544,34 +543,34 @@ Note: The Google Maps API v3 must be included *before* this code
           }
           delete marker['_omsData'];
           unspiderfiedMarkers.push(marker);
-         // marker["multiple"] = false; 
+          // marker["multiple"] = false; 
         } else {
           nonNearbyMarkers.push(marker);
           //marker.setMap(this.map); 
-			//marker["multiple"] = false; 
-        //    function ABIcolor(_ABI) {
-        //        if (_ABI > 70) return "99E6FF";
-         //       if (_ABI > 45) return "94FF70";
-        //        if (_ABI > 27) return "FFFA4F";
-       //         if (_ABI > 11) return "FFAD33";
-      //          return "F75D63";
-      //      }
+          //marker["multiple"] = false; 
+          //    function ABIcolor(_ABI) {
+          //        if (_ABI > 70) return "99E6FF";
+          //       if (_ABI > 45) return "94FF70";
+          //        if (_ABI > 27) return "FFFA4F";
+          //         if (_ABI > 11) return "FFAD33";
+          //          return "F75D63";
+          //      }
 
-     //       var pinColor = ABIcolor(marker.point.model.IBA);
+          //       var pinColor = ABIcolor(marker.point.model.IBA);
 
-      //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
-    //           new google.maps.Size(31.5, 51),
-    //            new google.maps.Point(0, 0),
-    //            new google.maps.Point(15.75, 51),
-    //            new google.maps.Size(31.5, 51));
-    //        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-    //           new google.maps.Size(80, 74),
-   //             new google.maps.Point(0, 0),
-   //            new google.maps.Point(12, 70),
-   //            new google.maps.Size(80, 74));
+          //      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + pinColor,
+          //           new google.maps.Size(31.5, 51),
+          //            new google.maps.Point(0, 0),
+          //            new google.maps.Point(15.75, 51),
+          //            new google.maps.Size(31.5, 51));
+          //        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+          //           new google.maps.Size(80, 74),
+          //             new google.maps.Point(0, 0),
+          //            new google.maps.Point(12, 70),
+          //            new google.maps.Size(80, 74));
 
-  //         marker.setShadow(pinShadow);
-  //          marker.setIcon(pinImage);
+          //         marker.setShadow(pinShadow);
+          //          marker.setIcon(pinImage);
 
         }
       }

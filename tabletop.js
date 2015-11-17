@@ -437,6 +437,7 @@
             if (/^gsx/.test(key))
                 this.column_names.push(key.replace("gsx$", ""));
         }
+        
 
         this.original_columns = this.column_names;
 
@@ -508,6 +509,8 @@
                 } else {
                     pretty_columns[column_names[i]] = column_names[i];
                 }
+                
+
             }
 
             this.pretty_columns = pretty_columns;
@@ -541,6 +544,7 @@
             }
             this.elements = pretty_elements;
             this.column_names = ordered_pretty_names;
+            
         },
 
         /*
