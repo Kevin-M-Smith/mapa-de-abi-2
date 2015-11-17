@@ -342,7 +342,7 @@
                     if (marker["multiple"] == true && marker.map.getZoom() <= 14) {
 
 
-                        infowindow.setContent("Multiple measurements here. <br> Zoom in to see. ");
+                        infowindow.setContent("Varias fechas de datos. <br> Centrarse en el punto para verlos. ");
                         infowindow.open(that.map, that);
                         clickedOpen = true;
                         infowindow.opened = true;
