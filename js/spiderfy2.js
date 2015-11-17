@@ -469,8 +469,8 @@ Note: The Google Maps API v3 must be included *before* this code
          //   e.setIcon(pinImage);
         });
 
-      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt).reverse(): this.generatePtsLadder(numFeet, bodyPt).reverse()
-        var footPtsSides = this.generateSidePtsLadder(numFeet, bodyPt).reverse();
+      footPts = numFeet >= this['circleSpiralSwitchover'] ? this.generatePtsLadder(numFeet, bodyPt): this.generatePtsLadder(numFeet, bodyPt)
+        var footPtsSides = this.generateSidePtsLadder(numFeet, bodyPt)
         var tallPts = this.generateTallPts(numFeet, bodyPt);
         console.log(footPts);
         spiderfiedMarkers = (function() {
